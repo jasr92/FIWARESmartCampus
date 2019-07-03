@@ -20,5 +20,5 @@ from Map.views import mostrar_mapa
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'^$', mostrar_mapa)
+    path(r'', mostrar_mapa)
 ]
