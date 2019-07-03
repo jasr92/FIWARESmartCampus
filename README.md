@@ -1,1 +1,2 @@
 # FIWARESmartCampus
+Desde el vicerrectorado Smart Campus de la Universidad de Málaga (UMA) desarrollamos una app en Django con el fin de mostrar en un mapa los datos de los disntintos sensores repartidos en el campus universitario, obtenidos de la plataforma FIWARE 
