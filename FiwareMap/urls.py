@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from Map.views import mostrar_mapa
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path(r'^$', mostrar_mapa)
 ]
