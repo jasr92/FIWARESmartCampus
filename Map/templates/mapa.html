@@ -1,53 +1,55 @@
 <!DOCTYPE html>
 {% load static %}
 {% block content %}
-{% csrf_token %}
+    {% csrf_token %}
 
-<html>
-<head>
-    <title>Mapa</title>
+    <html>
+    <head>
+        <title>Mapa</title>
 
-    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-    <script src="{% static 'js/ol3-layerswitcher.js' %}"></script>
+        <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                crossorigin="anonymous"></script>
+        <script src="{% static 'js/ol3-layerswitcher.js' %}"></script>
+        <script src="{% static 'js/FuncionesCluster.js' %}"></script>
+        <script src="{% static 'js/FuncionesInteraccion.js' %}"></script>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-          crossorigin="anonymous">
-    <link rel="stylesheet"
-          href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css">
-    <link rel="stylesheet" href="{% static 'css/ol3-layerswitcher.css' %}">
-    <link rel="stylesheet" href="{% static 'css/popup.css' %}">
-    <link rel="stylesheet" href="{% static 'css/estilo_Mapa.css' %}">
-
-
-</head>
-<body>
-<h1>Mapa campus de la UMA</h1>
-<p>En este mapa se muestra información obtenida de los sensores repartidos por el campus de la UMA</p>
-
-<div id="map" class="map" style="width: 100%; height: 400px"></div>
-<div id="popup" class="ol-popup">
-    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-    <div id="popup-content"></div>
-</div>
-
-<div id="photo-info" class="container">
-    <div id="fotoInfo" class="foto-Info"></div>
-    <div id="textInfo" class="text-Info"></div>
-</div>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous">
+        <link rel="stylesheet"
+              href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css">
+        <link rel="stylesheet" href="{% static 'css/ol3-layerswitcher.css' %}">
+        <link rel="stylesheet" href="{% static 'css/popup.css' %}">
+        <link rel="stylesheet" href="{% static 'css/estilo_Mapa.css' %}">
 
 
-<p id="demo"></p>
-<script>
+    </head>
+    <body>
+    <h1>Mapa campus de la UMA</h1>
+    <p>En este mapa se muestra información obtenida de los sensores repartidos por el campus de la UMA</p>
+
+    <div id="map" class="map" style="width: 100%; height: 400px"></div>
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+    </div>
+
+    <div id="photo-info" class="container">
+        <div id="fotoInfo" class="foto-Info"></div>
+        <div id="textInfo" class="text-Info"></div>
+    </div>
+
+
+    <p id="demo"></p>
+    <script>
         var coordenadasIniciales = ol.proj.fromLonLat([-4.472176, 36.716432]);
         //ESTILOS==============================================
 
@@ -71,175 +73,10 @@
             }
             return false;
         }
-
-
         //=================================================================
-
-        //FUNCIONES PARA EL CLUSTER***************************************
-        // this function computes a circle style
-        // based on the size of a cluster
-        // the style is cached.
-        function getCircleStyle(size) {
-            var key = 'circle' + size;
-            if (!cache[key]) {
-                if (size > 1) {
-                    cache[key] = new ol.style.Style({
-                        image: new ol.style.Circle({
-                            radius: 8 + size / 10,
-                            fill: new ol.style.Fill({
-                                color: 'rgb(0, 52, 107)'
-
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: 'white',
-                                width: 2
-                            })
-                        })
-                    });
-                } else {
-                    cache[key] = new ol.style.Style({
-                        image: new ol.style.Icon({
-                            anchor: [0.5, 46],
-                            anchorXUnits: 'fraction',
-                            anchorYUnits: 'pixels',
-                            opacity: 1,
-                            scale: 0.5,
-                            src: 'http://osm.uma.es/Iconos/Arbol/icon_tree_color.png'
-
-                        })
-                    });
-                }
-            }
-
-            return cache[key];
-        }
-
-        // this function computes a text style
-        // based on the size of a cluster
-        // the style is cached
-        function getTextStyle(text) {
-            var key = 'text' + text;
-            if (!cache[key]) {
-                cache[key] = new ol.style.Style({
-                    text: new ol.style.Text({
-                        font: '10px sans-serif',
-                        text: text,
-                        textBaseline: 'alphabetic',
-                        offsetY: 4,
-                        fill: new ol.style.Fill({
-                            color: 'white'
-                        })
-                    })
-                });
-            }
-            return cache[key];
-        }
-
-        // the style function for the cluster layer combines
-        // a circle and a text style based on the size of the cluster
-        function clusterStyle(feature, resolution) {
-            var size = feature.get('features').length;
-            var pointStyle = getCircleStyle(size);
-            if (size > 1) {
-                var textStyle = getTextStyle(size.toString());
-            } else {
-                var textStyle = getTextStyle("");
-            }
-
-            return [pointStyle, textStyle];
-        }
-
-        //.........................................................................
-
-        //Estilo Interaccion
-        function flyTo(location, done) {
-            var duration = 1500;
-            var zoom = view.getZoom();
-            var parts = 2;
-            var called = false;
-
-            function callback(complete) {
-                --parts;
-                if (called) {
-                    return;
-                }
-                if (parts === 0 || !complete) {
-                    called = true;
-                    done(complete);
-                }
-            }
-
-            view.animate({
-                center: location,
-                duration: duration
-            }, callback);
-            view.animate({
-                zoom: zoom - 0.2,
-                duration: duration / 2
-            }, {
-                zoom: zoom + 2,
-                duration: duration / 2
-            }, callback);
-        }
-
-        function styleSelectArbol(feature, resolution) {
-            var size = feature.get('features').length;
-
-            var pointStyle = getCircleStyle(size);
-            var coordenadas = feature.get('features')[0].getGeometry().getCoordinates();
-            if (size > 1) {
-                //Acerco
-                console.log(typeof coordenadas)
-                console.log(coordenadas);
-                flyTo(coordenadas, function () {
-                });
-                selectArbol.getFeatures().clear();
-                return
-            } else {
-                var hdms = ol.coordinate.toStringHDMS(ol.proj.toLonLat(coordenadas));
-                var coord = ol.proj.toLonLat(coordenadas);
-
-                var id = feature.get('features')[0].getId();
-
-                var datoActual = buscar_x_ID_JSON(obj, id);
-
-
-                content.innerHTML = '<p>ID: ' + id + '</p>' +
-                    '<p>Coordenadas: ' + hdms + '</p>' +
-                    '<p>Coordenadas: ' + coord + '</p>';
-                console.log(datoActual.URLImagen.value)
-
-                text_Info.innerHTML = "<p><ul><li><b>Nombre Común: </b>" + datoActual.NombreVulgar.value + "</li>" +
-                    "<li>Nombre Científico: " + datoActual.NombreCientifico.value + "</li>" +
-                    "<li>Altura: " + datoActual.Altura.value + "m </li>" +
-                    "<li>Diámetro tronco: " + datoActual.DiametroTronco.value + " m</<li>" +
-                    "<li>Diámetro Copa: " + datoActual.DiametroCopa.value + "m </li></ul>";
-
-                foto_Info.innerHTML = "<a><img src=" + datoActual.URLImagen.value + " alt=" + id + "style=height=100%; width=100%; image-orientation: from-image;" + "/> </a>"
-
-                overlay.setPosition(coordenadas);
-
-
-                estilo = new ol.style.Style({
-                    image: new ol.style.Icon({
-                        anchor: [0.5, 46],
-                        anchorXUnits: 'fraction',
-                        anchorYUnits: 'pixels',
-                        opacity: 1,
-                        scale: 0.5,
-                        src: 'http://osm.uma.es/Iconos/Arbol/icon_tree_magenta.png'
-
-                    })
-                });
-                return estilo;
-            }
-        }
-
 
         var arbolesSource = new ol.source.Vector();
         var obj = {{ entidades|safe }};
-        //var coordenadas = [parseFloat(obj[0].location.value.coordinates[1]), parseFloat(obj[0].location.value.coordinates[0])];
-        //var coordenadas = ol.proj.fromLonLat(obj[0].location.value.coordinates);
 
         var n_entidades = obj.length;
         for (var i = 0; i < n_entidades; i++) {
@@ -310,22 +147,10 @@
             zoom: 10
         })
 
-        var map = new ol.Map({
-            layers:
-                [new ol.layer.Group({
-                    'title': 'Capas Base',
-                    layers: [
-                        new ol.layer.Tile({
-                            title: 'Capa Plano',
-                            source: new ol.source.OSM()
-                        })]
-                })],
-            overlays: [overlay],
-            target: 'map',
-            view: view,
-        })
-        map.addControl(new ol.control.ZoomSlider());
-
+        var planoOSM = new ol.layer.Tile({
+            title: 'Capa Plano',
+            source: new ol.source.OSM()
+        });
 
         var capaArboles = new ol.layer.Vector({
             title: 'Árboles',
@@ -334,16 +159,29 @@
             //style: styleFunction
         });
 
-        new ol.layer.Group({
-            title: 'Capas Datos',
-            layers: [
-                capaArboles,
-            ]
+
+        var map = new ol.Map({
+            layers:
+                [new ol.layer.Group({
+                    //'title': 'Capas Base',
+                    layers: [
+                        planoOSM,]
+                }),
+                new ol.layer.Group({
+                    'title': 'Capas Datos',
+                    layers: [
+                        capaArboles,]
+                })
+                ],
+            overlays: [overlay],
+            target: 'map',
+            view: view,
         })
+        map.addControl(new ol.control.ZoomSlider());
 
 
         // Añadir capa vectorial al mapa
-        map.addLayer(capaArboles);
+        //map.addLayer(capaArboles);
 
         var selectArbol = new ol.interaction.Select({
                 layers: [capaArboles],
@@ -398,15 +236,7 @@
 
         console.log("test")
 
-        //var obj = [{"title": "meeting", "start": "ahora"}, {"title": "meeting", "start": "ahora"}]
-        //document.getElementById('demo').innerHTML = arbolesSource.getFeatures();
-        //console.log(obj)
-
-
-</script>
-
-</body>
-
-
-</html>
+    </script>
+    </body>
+    </html>
 {% endblock %}
