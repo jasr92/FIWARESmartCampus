@@ -31,6 +31,7 @@
         <link rel="stylesheet" href="{% static 'css/estilo_Mapa.css' %}">
 
 
+
     </head>
     <body>
     <h1>Mapa campus de la UMA</h1>
@@ -44,7 +45,7 @@
 
     <div id="photo-info" class="container">
         <div id="fotoInfo" class="foto-Info"></div>
-        <div id="textInfo" class="text-Info"></div>
+        <ul id="textInfo" class="text-Info"></ul>
     </div>
 
 
@@ -83,7 +84,10 @@
             var coordenadas = ol.proj.fromLonLat(obj[i].location.value.coordinates);
             var geometry = new ol.geom.Point(coordenadas);
             //document.getElementById('demo').innerHTML = ["Coordenadas Brutas: " + coordenadas];
-            var feature = new ol.Feature(geometry);
+            var feature = new ol.Feature({
+                geometry: geometry,
+                name: obj[i].type
+            });
             feature.setId(obj[i].id)
             arbolesSource.addFeature(feature);
 
@@ -134,7 +138,7 @@
         closer.onclick = function () {
             overlay.setPosition(undefined);
             closer.blur();
-            selectArbol.getFeatures().clear(); //Deselecciono el objeto
+            selectObject.getFeatures().clear(); //Deselecciono el objeto
             return false;
         };
         //*****************************************************************************************************************
@@ -179,13 +183,9 @@
         })
         map.addControl(new ol.control.ZoomSlider());
 
-
-        // Añadir capa vectorial al mapa
-        //map.addLayer(capaArboles);
-
-        var selectArbol = new ol.interaction.Select({
+        var selectObject = new ol.interaction.Select({
                 layers: [capaArboles],
-                style: styleSelectArbol
+                style: styleSelectObject
             })
         ;
         var layerSwitcher = new ol.control.LayerSwitcher({
@@ -195,7 +195,7 @@
         layerSwitcher.showPanel();
 
 
-        map.addInteraction(selectArbol);
+        map.addInteraction(selectObject);
 
         //Cambios de estilo del cursor para que salga la mano señalando cuando haya un elemento ==============
         map.on('pointermove', function (e) {
@@ -209,12 +209,12 @@
         map.on('click', function (e) {
             overlay.setPosition(undefined);
             closer.blur();
-            selectArbol.getFeatures().clear(); //Deselecciono el objeto
+            selectObject.getFeatures().clear(); //Deselecciono el objeto
         });
         map.on('pointerdrag', function (e) {
             overlay.setPosition(undefined);
             closer.blur();
-            selectArbol.getFeatures().clear(); //Deselecciono el objeto
+            selectObject.getFeatures().clear(); //Deselecciono el objeto
         });
 
 

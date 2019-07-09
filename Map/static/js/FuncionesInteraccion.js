@@ -1,3 +1,29 @@
+atributos_propiedades = ["id", "type", "location", "URLImagen"];
+tipos = ["Arbol"];
+
+function traductorAtributos(type, atributoBuscado) {
+
+    var atributos;
+    var atributosTraducidos
+    var NombreAtributo = atributoBuscado;
+
+    // AQUÍ SE DEBEN AÑADIR LOS ATRIBUTOS Y LO QUE SE QUIERE VER POR PANTALLA ==================================
+    if (type.localeCompare(tipos[0]) == 0) { //Si vale ese valor
+        //Árboles
+        var atributos = ["Altura", "DiametroCopa", "DiametroTronco", "NombreCientifico", "NombreVulgar"];
+        var atributosTraducidos = ["Altura (m)", "Diámetro Copa (m)", "Diámetro Tronco (m)", "Nombre Científico", "Nombre Común"];
+    }
+    //===========================================================================================================
+
+
+    var indice = atributos.indexOf(atributoBuscado);
+    if (indice != -1) { //Si lo encuentra en nuestra lista
+        NombreAtributo = atributosTraducidos[indice];
+    }
+    return NombreAtributo;
+}
+
+
 //Estilo Interaccion
 function flyTo(location, done) {
     var duration = 1500;
@@ -29,55 +55,77 @@ function flyTo(location, done) {
     }, callback);
 }
 
-function styleSelectArbol(feature, resolution) {
+function styleSelectObject(feature, resolution) {
+    //console.log(feature.get('features'))
     var size = feature.get('features').length;
+    var tipoEntidad = feature.get('features')[0].get('name');
 
-    var pointStyle = getCircleStyle(size);
+    var pointStyle = getCircleStyle(size, tipoEntidad);
     var coordenadas = feature.get('features')[0].getGeometry().getCoordinates();
     if (size > 1) {
         //Acerco
-        console.log(typeof coordenadas)
-        console.log(coordenadas);
+        //console.log(typeof coordenadas)
+        //console.log(coordenadas);
         flyTo(coordenadas, function () {
         });
-        selectArbol.getFeatures().clear();
+        selectObject.getFeatures().clear();
         return
     } else {
         var hdms = ol.coordinate.toStringHDMS(ol.proj.toLonLat(coordenadas));
         var coord = ol.proj.toLonLat(coordenadas);
 
         var id = feature.get('features')[0].getId();
-
         var datoActual = buscar_x_ID_JSON(obj, id);
+        var type = datoActual.type;
 
 
         content.innerHTML = '<p>ID: ' + id + '</p>' +
             '<p>Coordenadas: ' + hdms + '</p>' +
             '<p>Coordenadas: ' + coord + '</p>';
-        console.log(datoActual.URLImagen.value)
-
-        text_Info.innerHTML = "<p><ul><li><b>Nombre Común: </b>" + datoActual.NombreVulgar.value + "</li>" +
-            "<li>Nombre Científico: " + datoActual.NombreCientifico.value + "</li>" +
-            "<li>Altura: " + datoActual.Altura.value + "m </li>" +
-            "<li>Diámetro tronco: " + datoActual.DiametroTronco.value + " m</<li>" +
-            "<li>Diámetro Copa: " + datoActual.DiametroCopa.value + "m </li></ul>";
-
-        foto_Info.innerHTML = "<a><img src=" + datoActual.URLImagen.value + " alt=" + id + "style=height=100%; width=100%; image-orientation: from-image;" + "/> </a>"
-
-        overlay.setPosition(coordenadas);
 
 
-        estilo = new ol.style.Style({
-            image: new ol.style.Icon({
-                anchor: [0.5, 46],
-                anchorXUnits: 'fraction',
-                anchorYUnits: 'pixels',
-                opacity: 1,
-                scale: 0.5,
-                src: 'http://osm.uma.es/Iconos/Arbol/icon_tree_magenta.png'
+        //console.log(datoActual);
 
-            })
-        });
-        return estilo;
+        var atributos = Object.keys(datoActual);
+
+
+        text_Info.innerHTML = "";
+        for (var i = 0; i < atributos.length; i++) {
+            if (!atributos_propiedades.includes(atributos[i])) { //En caso de que no sea un atributo de propiedades
+                var li = document.createElement("li");
+                nombreAtributo = traductorAtributos(type, atributos[i]);
+
+                li.innerHTML = '<b>' + nombreAtributo + ': </b>' + datoActual[atributos[i]].value;
+                text_Info.appendChild(li);
+            } else if (atributos[i].localeCompare("URLImagen") == 0) {
+                foto_Info.innerHTML = "<a><img src=" + datoActual.URLImagen.value + " alt=" + id + " style= height:100%;width:100%;image-orientation:from-image;" + " /></a>";
+            }
+        }
     }
+    overlay.setPosition(coordenadas);
+    estilo = buscadorEstilosIconSelected(type);
+    return estilo;
+}
+
+
+function buscadorEstilosIconSelected(type) {
+    var enlace;
+    if (type.localeCompare(tipos[0]) == 0) {
+        enlace = 'http://osm.uma.es/Iconos/Arbol/icon_tree_magenta.png';
+    } else {
+        enlace = 'http://osm.uma.es/Iconos/Default/interrogacionSelect.png';
+
+    }
+    estilo = new ol.style.Style({
+        image: new ol.style.Icon({
+            anchor: [0.5, 46],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'pixels',
+            opacity: 1,
+            scale: 0.5,
+            src: enlace
+        })
+    });
+
+    return estilo;
 }
