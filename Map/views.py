@@ -55,7 +55,7 @@ def obtenerToken():
     return r.headers.get('X-Subject-Token')
 
 
-def pedir_entidades(token):
+def pedir_entidades(token,path_entidades):
     url_entidades = url_plataforma + puerto_entidades + path_entidades + opciones_entidades
     headers_entidades = {'Fiware-Service': 'smart_campus_uma', 'Fiware-ServicePath': '/fraterni_lab',
                          'X-Auth-Token': token
@@ -70,9 +70,10 @@ def mostrar_mapa(request):
     # 1 - pedimos el token
     token = obtenerToken()
     # print('token = ' + token)
-
+    entidades=()
     # 2 - Pedimos las entidades que vamos a mostrar en el mapa
-    entidades = pedir_entidades(token)
+    for i in range(len(path_entidades)):
+     entidades += pedir_entidades(token,path_entidades[i])
     # print('respuesta: ' + entidades.text)
     # print (entidades)
     # return JsonResponse(entidades.json(), safe=False)
