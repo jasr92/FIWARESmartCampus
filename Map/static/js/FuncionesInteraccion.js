@@ -1,5 +1,5 @@
 atributos_propiedades = ["id", "type", "location", "URLImagen"];
-tipos = ["Arbol"];
+tipos = ["Arbol", "Biodiversidad"];
 
 function traductorAtributos(type, atributoBuscado) {
 
@@ -12,6 +12,11 @@ function traductorAtributos(type, atributoBuscado) {
         //Árboles
         var atributos = ["Altura", "DiametroCopa", "DiametroTronco", "NombreCientifico", "NombreVulgar"];
         var atributosTraducidos = ["Altura (m)", "Diámetro Copa (m)", "Diámetro Tronco (m)", "Nombre Científico", "Nombre Común"];
+    }
+    if(type.localeCompare(tipos[1]) == 0){
+        //Biodiversidad
+        var atributos = ["contenido", "properties", "time"];
+        var atributosTraducidos = ["Descripcion", "Propiedades", "Fecha y hora"];
     }
     //===========================================================================================================
 
