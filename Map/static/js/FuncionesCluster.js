@@ -68,9 +68,11 @@ function buscadorEstilosIcon(type) {
     var enlace;
     if (type.localeCompare(tipos[0]) == 0) {
         enlace = 'http://osm.uma.es/Iconos/Arbol/icon_tree_color.png';
+    } else if (type.localeCompare(tipos[1]) == 0) {
+        //enlace = /*--------------------------------------------------- Subir nuevo icono para biodiversidad --------*/
+
     } else {
         enlace = 'http://osm.uma.es/Iconos/Default/interrogacion.png';
-
     }
     estilo = new ol.style.Style({
         image: new ol.style.Icon({
@@ -86,14 +88,18 @@ function buscadorEstilosIcon(type) {
     return estilo;
 }
 
+/*------------------ COLOR DE RELLENO PARA LOS CLUSTER DE ENTIDADES------------------*/
 function buscadorEstilosCluster(type) {
     var color_relleno;
     if (type.localeCompare(tipos[0]) == 0) {
         color_relleno = 'rgb(0, 52, 107)';
+    } else if (type.localeCompare(tipos[1]) == 0){
+        color_relleno = 'rgb(0, 152, 107)';
+
     } else {
         color_relleno = 'rgb(51, 204, 204)';
-
     }
+
 
     EstiloRelleno = new ol.style.Fill({
             color: color_relleno
