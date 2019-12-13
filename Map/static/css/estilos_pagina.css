@@ -1,7 +1,19 @@
 h1{
-    background-color: rgba(73,137,202,0.8);
+    background-color: rgba(73,137,252,0.8);
     text-align: center;
     color: white;
     padding: 0.5em;
     border-radius: 5px;
+}
+
+.ooo{
+    text-align: center;
+    font-size: 1.2em;
+    color: white;
+    background-color: rgba(73,137,252,0.8);
+    padding: 5px;
+    border-radius: 8px;
+    float: left;
+    width: 200px;
+    font-weight: bold;
 }

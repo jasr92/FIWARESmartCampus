@@ -2,6 +2,9 @@ from django.http import request, HttpRequest, JsonResponse
 from django.shortcuts import render
 import requests
 import json
+import urllib3
+
+urllib3.disable_warnings()
 
 # Datos para acceder a la plataforma FIWARE
 servicio = 'smart_campus_uma'
@@ -70,10 +73,17 @@ def mostrar_mapa(request):
     # 1 - pedimos el token
     token = obtenerToken()
     # print('token = ' + token)
-    entidades=()
+
     # 2 - Pedimos las entidades que vamos a mostrar en el mapa
+    #entidades = pedir_entidades(token, path_entidades[0])
+    entidades=[]
     for i in range(len(path_entidades)):
-     entidades += pedir_entidades(token,path_entidades[i])
+     entidades.append(pedir_entidades(token,path_entidades[i]))
+
+    print('\n')
+    print(entidades)
+
+
     # print('respuesta: ' + entidades.text)
     # print (entidades)
     # return JsonResponse(entidades.json(), safe=False)
@@ -84,4 +94,9 @@ def mostrar_mapa(request):
         'entidades': json.dumps(entidades),
         'numero': num,
     }
+
+    print('\n')
+    print(context)
+    print('\n')
+
     return render(request, 'mapa.html', context=context)
