@@ -48,10 +48,34 @@ function getTextStyle(text) {
 
 // the style function for the cluster layer combines
 // a circle and a text style based on the size of the cluster
-function clusterStyle(feature, resolution) {
+function clusterStyle_1(feature, resolution) {
     var size = feature.get('features').length;
-    var tipoEntidad = feature.get('features')[0].get('name');
+    /* ============================================================================================================== */
+    //var tipoEntidad = feature.get('features')[0].get('name');
+    var id = obj[0][1].id;
+    var datoActual = buscar_x_ID_JSON(obj, id);
+    var tipoEntidad = datoActual.type;
+    document.getElementById('prueba').innerHTML = tipoEntidad.localeCompare(tipos[0]);
+    /* ============================================================================================================== */
 
+    var pointStyle = getCircleStyle(size, tipoEntidad);
+    if (size > 1) {
+        var textStyle = getTextStyle(size.toString());
+    } else {
+        var textStyle = getTextStyle("");
+    }
+
+    return [pointStyle, textStyle];
+}
+function clusterStyle_2(feature, resolution) {
+    var size = feature.get('features').length;
+    /* ============================================================================================================== */
+    //var tipoEntidad = feature.get('features')[0].get('name');
+    var id = obj[1][1].id;
+    var datoActual = buscar_x_ID_JSON(obj, id);
+    var tipoEntidad = datoActual.type;
+
+    /* ============================================================================================================== */
 
     var pointStyle = getCircleStyle(size, tipoEntidad);
     if (size > 1) {
@@ -63,12 +87,11 @@ function clusterStyle(feature, resolution) {
     return [pointStyle, textStyle];
 }
 
-
-function buscadorEstilosIcon(type) {
+function buscadorEstilosIcon(tipoEntidad) {
     var enlace;
-    if (type.localeCompare(tipos[0]) == 0) {
+    if (tipoEntidad.localeCompare(tipos[0]) == 0) {
         enlace = 'http://osm.uma.es/Iconos/Arbol/icon_tree_color.png';
-    } else if (type.localeCompare(tipos[1]) == 0) {
+    } else if (tipoEntidad.localeCompare(tipos[1]) == 0) {
         enlace = 'http://osm.uma.es/Iconos/Bio/Biodiversidad.png';
 
     } else {

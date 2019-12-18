@@ -83,7 +83,8 @@
         }
         //=======================================================================
 
-        var entidadesSource = new ol.source.Vector();
+        var entidad_Source_0 = new ol.source.Vector();
+        var entidad_Source_1 = new ol.source.Vector();
         var obj = {{ entidades|safe }};
 
         var n_ent_diferentes = obj.length;
@@ -102,23 +103,27 @@
                 });
                 feature.setId(obj[i][j].id)
                 /* Comprobaciones del codigo mostrada directamente en la página */
-                document.getElementById('prueba').innerHTML = feature.getId(1);/* ------------------------------------------------------------------- */
-                entidadesSource.addFeature(feature);
+                //document.getElementById('prueba').innerHTML = obj[0][422].id;/* ------------------------------------------------------------------- */
+                if (i==0) {
+                    entidad_Source_0.addFeature(feature);
+                } else {
+                    entidad_Source_1.addFeature(feature);
+                }
             }
         }
 
         // a cluster source can group photos that are too close
         var clusterSource_1 = new ol.source.Cluster({
-            source: entidadesSource,
+            source: entidad_Source_0,
             distance: 15
         });
         var clusterSource_2 = new ol.source.Cluster({
-            source: entidadesSource,
+            source: entidad_Source_1,
             distance: 15
         });
         var vectorLayer = new ol.layer.Vector({
-            source: clusterSource,
-            style: clusterStyle
+            source: clusterSource_1,
+            style: clusterStyle_1
         });
 
         var cache = {};
@@ -174,21 +179,21 @@
             title: 'Capa Plano',
             source: new ol.source.OSM()
         });
-
-        var capaArboles = new ol.layer.Vector({
-            title: 'Árboles',
-            source: clusterSource_1,
-            style: clusterStyle
-            //style: styleFunction
-        });
         /* ============================================================ AQUÍ ======================================== */
         var capaBiodiversidad = new ol.layer.Vector({
             title: 'Biodiversidad',
             source: clusterSource_2, /*-------------------------------------------------<<<<<<<<*/
-            style: clusterStyle
+            style: clusterStyle_2
             //style: styleFunction
         });
         /* ========================================================================================================== */
+        var capaArboles = new ol.layer.Vector({
+            title: 'Árboles',
+            source: clusterSource_1,
+            style: clusterStyle_1
+            //style: styleFunction
+        });
+
         var map = new ol.Map({
             layers:
                 [new ol.layer.Group({
