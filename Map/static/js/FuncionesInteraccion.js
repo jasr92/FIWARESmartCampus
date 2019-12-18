@@ -117,6 +117,8 @@ function buscadorEstilosIconSelected(type) {
     var enlace;
     if (type.localeCompare(tipos[0]) == 0) {
         enlace = 'http://osm.uma.es/Iconos/Arbol/icon_tree_magenta.png';
+    } else if (type.localeCompare(tipos[1]) == 0){
+        enlace = 'http://osm.uma.es/Iconos/Bio/Biodiversidad_2.png';
     } else {
         enlace = 'http://osm.uma.es/Iconos/Default/interrogacionSelect.png';
 

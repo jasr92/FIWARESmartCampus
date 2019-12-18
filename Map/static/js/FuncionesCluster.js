@@ -69,7 +69,7 @@ function buscadorEstilosIcon(type) {
     if (type.localeCompare(tipos[0]) == 0) {
         enlace = 'http://osm.uma.es/Iconos/Arbol/icon_tree_color.png';
     } else if (type.localeCompare(tipos[1]) == 0) {
-        //enlace = /*--------------------------------------------------- Subir nuevo icono para biodiversidad --------*/
+        enlace = 'http://osm.uma.es/Iconos/Bio/Biodiversidad.png';
 
     } else {
         enlace = 'http://osm.uma.es/Iconos/Default/interrogacion.png';

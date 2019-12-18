@@ -92,9 +92,6 @@
             var n_entidades = obj[i].length;
             for (var j = 0; j < n_entidades; j++) {
 
-                /* Comprobaciones del codigo mostrada directamente en la página */
-                document.getElementById('prueba').innerHTML = obj[1].length;
-
                 /* Acceso a cada entidad desde la matriz de arrays --> 'obj[][]' */
                 var coordenadas = ol.proj.fromLonLat(obj[i][j].location.value.coordinates);
                 var geometry = new ol.geom.Point(coordenadas);
@@ -104,11 +101,18 @@
                     name: obj[i][j].type
                 });
                 feature.setId(obj[i][j].id)
+                /* Comprobaciones del codigo mostrada directamente en la página */
+                document.getElementById('prueba').innerHTML = feature.getId(1);/* ------------------------------------------------------------------- */
                 entidadesSource.addFeature(feature);
             }
         }
+
         // a cluster source can group photos that are too close
-        var clusterSource = new ol.source.Cluster({
+        var clusterSource_1 = new ol.source.Cluster({
+            source: entidadesSource,
+            distance: 15
+        });
+        var clusterSource_2 = new ol.source.Cluster({
             source: entidadesSource,
             distance: 15
         });
@@ -173,12 +177,18 @@
 
         var capaArboles = new ol.layer.Vector({
             title: 'Árboles',
-            source: clusterSource,
+            source: clusterSource_1,
             style: clusterStyle
             //style: styleFunction
         });
-
-
+        /* ============================================================ AQUÍ ======================================== */
+        var capaBiodiversidad = new ol.layer.Vector({
+            title: 'Biodiversidad',
+            source: clusterSource_2, /*-------------------------------------------------<<<<<<<<*/
+            style: clusterStyle
+            //style: styleFunction
+        });
+        /* ========================================================================================================== */
         var map = new ol.Map({
             layers:
                 [new ol.layer.Group({
@@ -187,9 +197,10 @@
                         planoOSM,]
                 }),
                 new ol.layer.Group({
-                    'title': 'Capas Datos',
+                    'title': 'Capas de Datos',
                     layers: [
-                        capaArboles,]
+                        capaArboles,
+                        capaBiodiversidad,]
                 })
                 ],
             overlays: [overlay],
@@ -199,7 +210,7 @@
         map.addControl(new ol.control.ZoomSlider());
 
         var selectObject = new ol.interaction.Select({
-                layers: [capaArboles],
+                layers: [capaArboles, capaBiodiversidad],
                 style: styleSelectObject
             })
         ;
