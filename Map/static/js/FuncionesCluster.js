@@ -4,7 +4,7 @@
 // the style is cached.
 function getCircleStyle(size, tipoEntidad) {
     var color = buscadorEstilosCluster(tipoEntidad)
-    var key = 'circle' + size;
+    var key = tipoEntidad + size;                    //Solventar problema de presentación de entidades en 1ª carga
     if (!cache[key]) {
         if (size > 1) {
             cache[key] = new ol.style.Style({
@@ -51,11 +51,11 @@ function getTextStyle(text) {
 function clusterStyle_1(feature, resolution) {
     var size = feature.get('features').length;
     /* ============================================================================================================== */
-    //var tipoEntidad = feature.get('features')[0].get('name');
-    var id = obj[0][1].id;
-    var datoActual = buscar_x_ID_JSON(obj, id);
-    var tipoEntidad = datoActual.type;
-    document.getElementById('prueba').innerHTML = tipoEntidad.localeCompare(tipos[0]);
+    var tipoEntidad= feature.get('features')[0].get('name');
+    //var id = obj[0][1].id;
+    //var datoActual = buscar_x_ID_JSON(obj, id);
+    //var tipoEntidad = datoActual.type;
+
     /* ============================================================================================================== */
 
     var pointStyle = getCircleStyle(size, tipoEntidad);
@@ -70,10 +70,10 @@ function clusterStyle_1(feature, resolution) {
 function clusterStyle_2(feature, resolution) {
     var size = feature.get('features').length;
     /* ============================================================================================================== */
-    //var tipoEntidad = feature.get('features')[0].get('name');
-    var id = obj[1][1].id;
-    var datoActual = buscar_x_ID_JSON(obj, id);
-    var tipoEntidad = datoActual.type;
+    var tipoEntidad = feature.get('features')[0].get('name');
+    //var id = obj[1][1].id;
+    //var datoActual = buscar_x_ID_JSON(obj, id);
+    //var tipoEntidad = datoActual.type;
 
     /* ============================================================================================================== */
 

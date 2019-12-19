@@ -101,9 +101,10 @@
                     geometry: geometry,
                     name: obj[i][j].type
                 });
+
                 feature.setId(obj[i][j].id)
                 /* Comprobaciones del codigo mostrada directamente en la página */
-                //document.getElementById('prueba').innerHTML = obj[0][422].id;/* ------------------------------------------------------------------- */
+                //document.getElementById('prueba').innerHTML = obj[0][422].type;/* ------------------------------------------------------------------- */
                 if (i==0) {
                     entidad_Source_0.addFeature(feature);
                 } else {
@@ -179,6 +180,8 @@
             title: 'Capa Plano',
             source: new ol.source.OSM()
         });
+
+
         /* ============================================================ AQUÍ ======================================== */
         var capaBiodiversidad = new ol.layer.Vector({
             title: 'Biodiversidad',
@@ -186,6 +189,8 @@
             style: clusterStyle_2
             //style: styleFunction
         });
+
+        
         /* ========================================================================================================== */
         var capaArboles = new ol.layer.Vector({
             title: 'Árboles',
@@ -194,9 +199,10 @@
             //style: styleFunction
         });
 
+
         var map = new ol.Map({
-            layers:
-                [new ol.layer.Group({
+            layers:[
+                new ol.layer.Group({
                     //'title': 'Capas Base',
                     layers: [
                         planoOSM,]
@@ -205,7 +211,7 @@
                     'title': 'Capas de Datos',
                     layers: [
                         capaArboles,
-                        capaBiodiversidad,]
+                        capaBiodiversidad]
                 })
                 ],
             overlays: [overlay],
