@@ -86,6 +86,25 @@ function clusterStyle_2(feature, resolution) {
 
     return [pointStyle, textStyle];
 }
+function clusterStyle_3(feature, resolution) {
+    var size = feature.get('features').length;
+    /* ============================================================================================================== */
+    var tipoEntidad = feature.get('features')[0].get('name');
+    //var id = obj[1][1].id;
+    //var datoActual = buscar_x_ID_JSON(obj, id);
+    //var tipoEntidad = datoActual.type;
+
+    /* ============================================================================================================== */
+
+    var pointStyle = getCircleStyle(size, tipoEntidad);
+    if (size > 1) {
+        var textStyle = getTextStyle(size.toString());
+    } else {
+        var textStyle = getTextStyle("");
+    }
+
+    return [pointStyle, textStyle];
+}
 
 function buscadorEstilosIcon(tipoEntidad) {
     var enlace;
@@ -93,7 +112,8 @@ function buscadorEstilosIcon(tipoEntidad) {
         enlace = 'http://osm.uma.es/Iconos/Arbol/icon_tree_color.png';
     } else if (tipoEntidad.localeCompare(tipos[1]) == 0) {
         enlace = 'http://osm.uma.es/Iconos/Bio/Biodiversidad.png';
-
+    } else if (tipoEntidad.localeCompare(tipos[2]) == 0) {
+        enlace = 'http://osm.uma.es/Iconos/Carga/carga1.png';
     } else {
         enlace = 'http://osm.uma.es/Iconos/Default/interrogacion.png';
     }
@@ -118,7 +138,8 @@ function buscadorEstilosCluster(type) {
         color_relleno = 'rgb(0, 52, 107)';
     } else if (type.localeCompare(tipos[1]) == 0){
         color_relleno = 'rgb(0, 152, 107)';
-
+    } else if (type.localeCompare(tipos[2]) == 0){
+        color_relleno = 'rgb(220, 87, 131)';
     } else {
         color_relleno = 'rgb(51, 204, 204)';
     }

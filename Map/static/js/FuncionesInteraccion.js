@@ -1,5 +1,5 @@
 atributos_propiedades = ["id", "type", "location", "URLImagen"];
-tipos = ["Arbol", "Biodiversidad"];
+tipos = ["Arbol", "Biodiversidad", "Cargadores"];
 
 function traductorAtributos(type, atributoBuscado) {
 
@@ -17,6 +17,11 @@ function traductorAtributos(type, atributoBuscado) {
         //Biodiversidad
         var atributos = ["contenido", "properties", "time"];
         var atributosTraducidos = ["Descripcion", "Propiedades", "Fecha y hora"];
+    }
+    if(type.localeCompare(tipos[2]) == 0){
+        //Cargadores
+        var atributos = ["nombre", "descripcion", "modelo", "conectores"];
+        var atributosTraducidos = ["Punto", "Descripción", "Modelo", "Conectores"];
     }
     //===========================================================================================================
 
@@ -119,9 +124,10 @@ function buscadorEstilosIconSelected(type) {
         enlace = 'http://osm.uma.es/Iconos/Arbol/icon_tree_magenta.png';
     } else if (type.localeCompare(tipos[1]) == 0){
         enlace = 'http://osm.uma.es/Iconos/Bio/Biodiversidad_2.png';
+    } else if (type.localeCompare(tipos[2]) == 0){
+        enlace = 'http://osm.uma.es/Iconos/Carga/carga2.png';
     } else {
         enlace = 'http://osm.uma.es/Iconos/Default/interrogacionSelect.png';
-
     }
     estilo = new ol.style.Style({
         image: new ol.style.Icon({
