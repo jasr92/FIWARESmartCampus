@@ -90,34 +90,38 @@
         var entidad_Source_0 = new ol.source.Vector();
         var entidad_Source_1 = new ol.source.Vector();
         var entidad_Source_2 = new ol.source.Vector();
+        var entidad_Source_3 = new ol.source.Vector();
         var obj = {{ entidades|safe }};
 
         var n_ent_diferentes = obj.length;
         for (var i = 0; i < n_ent_diferentes; i++) {
-            /* Segundo bucle para buscar dentro del array que contiene los distintos grupos de entidades */
             var n_entidades = obj[i].length;
             for (var j = 0; j < n_entidades; j++) {
-
-                /* Acceso a cada entidad desde la matriz de arrays --> 'obj[][]' */
-                var coordenadas = ol.proj.fromLonLat(obj[i][j].location.value.coordinates);
-                var geometry = new ol.geom.Point(coordenadas);
-                //document.getElementById('prueba').innerHTML = ["Coordenadas Brutas: " + coordenadas];
-                var feature = new ol.Feature({
-                    geometry: geometry,
-                    name: obj[i][j].type
-                });
+                if ( obj[i][j].location.value.type == 'Point' ) {
+                    var coordenadas = ol.proj.fromLonLat(obj[i][j].location.value.coordinates);
+                    var geometry = new ol.geom.Point(coordenadas);
+                } else {
+                    var n_vertices = obj[i][j].location.value.coordinates[0].length;
+                    var coordenadasP = new Array();
+                    for ( k = 0; k < n_vertices; k++) {
+                        coordenadasP[k] = obj[i][j].location.value.coordinates[0][k];
+                    }
+                    var geometry = new ol.geom.Polygon([coordenadasP]).transform('EPSG:4326', 'EPSG:3857');
+                }
+                        var feature = new ol.Feature({
+                            geometry: geometry,
+                            name: obj[i][j].type
+                        });
 
                 feature.setId(obj[i][j].id)
                 /* Comprobaciones del codigo mostrada directamente en la página */
-                //document.getElementById('prueba').innerHTML = obj[0][422].type;/* ------------------------------------------------------------------- */
-                if (i==0) {
-                    entidad_Source_0.addFeature(feature);
-                } else {
-                    if (i==1) {
-                        entidad_Source_1.addFeature(feature);
-                    } else {
-                        entidad_Source_2.addFeature(feature);
-                    }
+                document.getElementById('prueba').innerHTML = obj[1][1].id;    /* -------------- Comprobaciones ----- */
+
+                switch(i) {
+                  case 0: entidad_Source_0.addFeature(feature); break;
+                  case 1: entidad_Source_1.addFeature(feature); break;
+                  case 2: entidad_Source_2.addFeature(feature); break;
+                  case 3: entidad_Source_3.addFeature(feature); break;
                 }
             }
         }
@@ -133,6 +137,10 @@
         });
         var clusterSource_3 = new ol.source.Cluster({
             source: entidad_Source_2,
+            distance: 15
+        });
+        var clusterSource_4 = new ol.source.Cluster({
+            source: entidad_Source_3,
             distance: 15
         });
         var vectorLayer = new ol.layer.Vector({
@@ -215,6 +223,12 @@
             //style: styleFunction
         });
 
+        var capaZonas = new ol.layer.Vector({
+            title: 'Zonas',
+            source: entidad_Source_3,
+            style: Style_Z
+            //style: clusterStyle_4
+        });
 
         var map = new ol.Map({
             layers:[
@@ -226,6 +240,7 @@
                 new ol.layer.Group({
                     'title': 'Capas de Datos',
                     layers: [
+                        capaZonas,
                         capaArboles,
                         capaBiodiversidad,
                         capaCargadores]
@@ -238,7 +253,7 @@
         map.addControl(new ol.control.ZoomSlider());
 
         var selectObject = new ol.interaction.Select({
-                layers: [capaArboles, capaBiodiversidad, capaCargadores],
+                layers: [capaArboles, capaBiodiversidad, capaCargadores, capaZonas],
                 style: styleSelectObject
             })
         ;
@@ -247,7 +262,6 @@
         });
         map.addControl(layerSwitcher);
         layerSwitcher.showPanel();
-
 
         map.addInteraction(selectObject);
 

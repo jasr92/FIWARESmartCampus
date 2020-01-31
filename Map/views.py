@@ -21,7 +21,8 @@ path_token = '/v3/auth/tokens'
 
 # url para pedir todas las entidades
 puerto_entidades = ':2026'
-path_entidades = ['/v2/entities?type=Arbol', '/v2/entities?type=Biodiversidad', '/v2/entities?type=Cargadores']
+path_entidades = ['/v2/entities?type=Arbol', '/v2/entities?type=Biodiversidad',
+                  '/v2/entities?type=Cargadores', '/v2/entities?type=Zonas']
 opciones_entidades = '&limit=1000&options=count'
 
 
@@ -96,7 +97,8 @@ def mostrar_mapa(request):
     }
 
     print('\n')
-    print(len(path_entidades))
+    #print(len(path_entidades))
+    print(json.dumps(entidades))
     print('\n')
 
     return render(request, 'mapa.html', context=context)

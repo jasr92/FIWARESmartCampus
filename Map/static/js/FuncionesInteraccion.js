@@ -1,5 +1,5 @@
 atributos_propiedades = ["id", "type", "location", "URLImagen"];
-tipos = ["Arbol", "Biodiversidad", "Cargadores"];
+tipos = ["Arbol", "Biodiversidad", "Cargadores", "Zonas"];
 
 function traductorAtributos(type, atributoBuscado) {
 

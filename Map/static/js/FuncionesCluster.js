@@ -105,6 +105,38 @@ function clusterStyle_3(feature, resolution) {
 
     return [pointStyle, textStyle];
 }
+/*
+function clusterStyle_4(feature, resolution) {
+    var size = feature.get('features').length;
+    var tipoEntidad = feature.get('features')[0].get('name');
+    //var id = obj[1][1].id;
+    //var datoActual = buscar_x_ID_JSON(obj, id);
+    //var tipoEntidad = datoActual.type;
+    var pointStyle = getCircleStyle(size, tipoEntidad);
+    if (size > 1) {
+        var textStyle = getTextStyle(size.toString());
+    } else {
+        var textStyle = getTextStyle("");
+    }
+
+    return [pointStyle, textStyle];
+}
+*/
+function Style_Z(feature){
+    var tipoEntidad = feature.get('name');
+    if (tipoEntidad.localeCompare(tipos[3]) == 0) {
+        estilo = new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: 'blue',
+              width: 3
+            }),
+            fill: new ol.style.Fill({
+              color: 'rgba(0, 0, 255, 0.1)'
+            })
+          })
+    }
+    return estilo;
+}
 
 function buscadorEstilosIcon(tipoEntidad) {
     var enlace;
@@ -127,7 +159,6 @@ function buscadorEstilosIcon(tipoEntidad) {
             src: enlace
         })
     });
-
     return estilo;
 }
 
@@ -140,7 +171,9 @@ function buscadorEstilosCluster(type) {
         color_relleno = 'rgb(0, 152, 107)';
     } else if (type.localeCompare(tipos[2]) == 0){
         color_relleno = 'rgb(220, 87, 131)';
-    } else {
+    } else if (type.localeCompare(tipos[3]) == 0){
+        color_relleno = 'rgb(240, 147, 255)';
+    }else {
         color_relleno = 'rgb(51, 204, 204)';
     }
 
