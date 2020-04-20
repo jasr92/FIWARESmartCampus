@@ -22,9 +22,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '6o7oo0=ld120hbzp5&!ct&ki-%7nzcn@eum&jv9sp859-#%x9*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+#DEBUG = True -----------------------------------------------------------------------------<<<<
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -75,6 +76,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+	#'NAME': '/var/www/html/Pruebas_Alojamiento/Mapa/db.sqlite3'----------------------------------------------<<<<<
     }
 }
 
@@ -101,13 +103,17 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Madrid'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
+
+DEFAULT_CHARSET = 'utf-8'
+
+#CSRF_TRUSTED_ORIGINS = ['150.214.58.178']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
