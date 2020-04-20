@@ -1,17 +1,51 @@
+body{
+    font-size: 1.5rem;
+}
+
 h1{
-    background-color: rgba(73,137,252,0.8);
+    background-color: #00346b;
     text-align: center;
+    font-family: OpenSans;
+    font-size: 4rem;
     color: white;
     padding: 0.5em;
     border: 5px solid #FFFFFF;
     border-radius: 50px 0px 50px 0px;
-    margin-left: 15%;
-    margin-right: 15%;
-    /*border-radius: 5px;*/
+    //margin-left: 10%;
+    //margin-right: 10%;
 }
+
+.cabecerachica{
+    display: none;
+}
+.lcc1, .lcc2{
+    padding-top: 5px;
+    width: 50%;
+}
+.lcc1 a img, .lcc2 a img{
+    display:block;
+    margin:auto;
+}
+#cabecera, .lcc{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding:0;
+    margin: 0;
+}
+.lcc1, .lcc2, #cabecera li{display:inline;}
+#cabecera li div{
+    text-decoration: none;
+    float: left;
+}
+#ic1{padding-top: 10px; padding-right: 10px;}
+#ic2{padding-left: 10px;}
+#tc{width: 75vw;}
 
 .ooo{
     text-align: center;
+    font-family: OpenSans;
     font-size: 1.2em;
     color: white;
     background-color: rgba(73,137,252,0.8);
@@ -31,8 +65,47 @@ h1{
 
 .boxita{
     text-align: center;
-    font-weight: bold;
-    background-color: rgba(255,255,255,0.5);
+    //font-weight: bold;
+    background-color: #007A33;
     border-radius: 8px;
     padding: 8.5px;
+    color: white;
+}
+
+#marco{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+footer {
+  /*
+   position:fixed;
+   left:0px;
+   bottom:0px;
+  */
+   width:100%;
+   background: #00346b;
+}
+.row{
+    margin-right: 0px;
+    margin-left: 0px;
+}
+@media screen and (max-width: 1060px){
+    #tc{width: 50vw;}
+}
+@media screen and (max-width: 600px){
+    #textfooter{
+        height: 60px !important;
+    }
+}
+@media screen and (max-width: 550px){
+    #cabecera{
+        display: none;
+    }
+    .cabecerachica{
+        display: block;
+    }
 }
