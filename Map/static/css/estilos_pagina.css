@@ -43,6 +43,13 @@ h1{
 #ic2{padding-left: 10px;}
 #tc{width: 75vw;}
 
+.lcc1 a img, #ic1 a img{
+    max-height: 80px;
+}
+.lcc2 a img, #ic2 a img{
+    max-height: 90px;
+}
+
 .ooo{
     text-align: center;
     font-family: OpenSans;
@@ -93,7 +100,7 @@ footer {
     margin-right: 0px;
     margin-left: 0px;
 }
-@media screen and (max-width: 1060px){
+@media screen and (max-width: 1120px){
     #tc{width: 50vw;}
 }
 @media screen and (max-width: 600px){

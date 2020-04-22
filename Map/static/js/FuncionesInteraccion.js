@@ -148,17 +148,30 @@ function styleSelectObject(feature, resolution) {
                 li.innerHTML = '<b>' + nombreAtributo + ': </b>' + datoActual[atributos[i]].value;
                 text_Info.appendChild(li);
             } else if (atributos[i].localeCompare("URLImagen") == 0) {
-                foto_Info.innerHTML = "<a><img src=" + datoActual.URLImagen.value + " alt=" + id + " style= height:100%;width:100%;image-orientation:from-image;" + " /></a>";
+                foto_Info.innerHTML = "<a><img src=" + datoActual.URLImagen.value + " alt=" + id + " style= height:100%;width:100%;image-orientation:from-image; onclick=ampliar(this.src)" + " /></a>";
                 if ((datoActual.URLImagen.value).indexOf("youtube") != -1){
-                    foto_Info.innerHTML = "<iframe src=" + datoActual.URLImagen.value + " allowfullscreen style= height:400px;width:100%;></iframe>"};
+                    foto_Info.innerHTML = "<iframe src=" + datoActual.URLImagen.value + " allowfullscreen style=height:330px;width:100%;></iframe>"};
                 if ((datoActual.URLImagen.value).indexOf("album") != -1){
-                    foto_Info.innerHTML = "<iframe src=" + datoActual.URLImagen.value + " allowfullscreen style= height:500px;width:100%;></iframe>"};
+                    foto_Info.innerHTML = "<iframe src=" + datoActual.URLImagen.value + " allowfullscreen style=height:330px;width:100%;></iframe>"};
             }
         }
     }
     overlay.setPosition(coordenadas);
     estilo = buscadorEstilosIconSelected(type, feature);
     return estilo;
+}
+
+//============= Modal-box para ampliar imagenes =====================================
+// Get the modal
+//var modal = document.getElementById("myModal"); Se define la parte del codigo en javascript del html, para que lo vea este script
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+//var img = document.getElementById("myImg");
+//var modalImg = document.getElementById("img01");
+//var captionText = document.getElementById("caption");
+function ampliar(ruta){
+  modal.style.display = "block";
+  modalImg.src = ruta;
 }
 
 function buscadorEstilosIconSelected(type, feature) {
