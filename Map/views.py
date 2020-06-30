@@ -24,15 +24,15 @@ path_token = '/v3/auth/tokens'
 puerto_entidades = ':2026'
 path_entidades = ['/v2/entities?type=Arbol', '/v2/entities?type=Biodiversidad',
                   '/v2/entities?type=Cargadores', '/v2/entities?type=Zonas',
-                  '/v2/entities?type=Parkings']
+                  '/v2/entities?type=Parkings', '/v2/entities?type=EquiposClimatizacion']
 opciones_entidades = '&limit=1000&options=count'
 
 # Pasar por el proxy de la uma
-#proxy = {'http': 'http://heracles.sci.uma.es:3128/',
-#         'https': 'http://heracles.sci.uma.es:3128/'}
+proxy = {'http': 'http://heracles.sci.uma.es:3128/',
+		 'https': 'http://heracles.sci.uma.es:3128/'}
 
-#session = requests.Session()
-#session.verify = False
+session = requests.Session()
+session.verify = False
 
 def obtenerToken():
     data = {
@@ -64,8 +64,7 @@ def obtenerToken():
     headers = {'Content-Type': 'application/json'}
     url_token = url_plataforma + puerto_token + path_token
     data_json=JsonResponse(data)
-    #r = requests.post(url_token, data=data_json.content, headers=headers, verify=False, proxies=proxy)
-    r = requests.post(url_token, data=data_json, headers=headers, verify=False)
+    r = requests.post(url_token, data=data_json.content, headers=headers, verify=False, proxies=proxy)    
 
     return r.headers.get('X-Subject-Token')
 
@@ -76,8 +75,7 @@ def pedir_entidades(token,path_entidades):
                          'X-Auth-Token': token
                          }
     # verify = False para saltarse el tema de los certificados
-    #obj = requests.get(url_entidades, headers=headers_entidades, verify=False, proxies=proxy)
-    obj = requests.get(url_entidades, headers=headers_entidades, verify=False)
+    obj = requests.get(url_entidades, headers=headers_entidades, verify=False, proxies=proxy)
     # print(obj.text)
     return obj.json()
 
