@@ -118,6 +118,18 @@ function clusterStyle_4(feature, resolution) {
 
     return [pointStyle, textStyle];
 }
+function clusterStyle_5(feature, resolution) {
+    var size = feature.get('features').length;
+    var tipoEntidad = feature.get('features')[0].get('name');
+    var pointStyle = getCircleStyle(size, tipoEntidad);
+    if (size > 1) {
+        var textStyle = getTextStyle(size.toString());
+    } else {
+        var textStyle = getTextStyle("");
+    }
+
+    return [pointStyle, textStyle];
+}
 
 function Style_Z(feature){
     var tipoEntidad = feature.get('name');
@@ -183,6 +195,8 @@ function buscadorEstilosIcon(tipoEntidad) {
         enlace = 'http://osm.uma.es/Iconos/Carga/carga1.png';
     } else if (tipoEntidad.localeCompare(tipos[4]) == 0) {
         enlace = 'http://osm.uma.es/Iconos/Parking/PB_1.png';
+    } else if (tipoEntidad.localeCompare(tipos[5]) == 0) {
+        enlace = 'http://osm.uma.es/Iconos/Climatizacion/clima1.png';
     } else {
         enlace = 'http://osm.uma.es/Iconos/Default/interrogacion.png';
     }
@@ -207,9 +221,11 @@ function buscadorEstilosCluster(type) {
     } else if (type.localeCompare(tipos[1]) == 0){
         color_relleno = 'rgb(0, 152, 107)';
     } else if (type.localeCompare(tipos[2]) == 0){
-        color_relleno = 'rgb(220, 87, 131)';
+        color_relleno = 'rgb(246, 184, 112)';
     } else if (type.localeCompare(tipos[4]) == 0){
         color_relleno = 'rgb(240, 147, 255)';
+    } else if (type.localeCompare(tipos[5]) == 0){
+        color_relleno = 'rgb(228, 228, 99)';
     }else {
         color_relleno = 'rgb(51, 204, 204)';
     }

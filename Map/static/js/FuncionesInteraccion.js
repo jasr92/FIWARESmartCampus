@@ -1,5 +1,5 @@
 atributos_propiedades = ["id", "type", "location", "URLImagen"];
-tipos = ["Arbol", "Biodiversidad", "Cargadores", "Zonas", "Parkings"];
+tipos = ["Arbol", "Biodiversidad", "Cargadores", "Zonas", "Parkings", "EquiposClimatizacion"];
 
 function traductorAtributos(type, atributoBuscado) {
 
@@ -32,6 +32,13 @@ function traductorAtributos(type, atributoBuscado) {
         //Parkings
         var atributos = ["name", "descripcion"];
         var atributosTraducidos = ["Nombre", "Descripción"];
+    }
+    if(type.localeCompare(tipos[5]) == 0){
+        //Equipos de climatizacion (Solo los presentes en el campus de El Ejido de momento)
+        var atributos = ["edificio", "calorpot", "friopot", "exteams", "inteams", "enlace"];
+        var atributosTraducidos = ["Edificio", "Potencia Bomba Calor Instalada (kW)",
+        "Potencia Frigorifica Instalada (kW)", "Equipos exteriores instalados", "Suma de Unidades interiores asociadas",
+        "Enlace"];
     }
     //===========================================================================================================
 
@@ -145,7 +152,12 @@ function styleSelectObject(feature, resolution) {
                 var li = document.createElement("li");
                 nombreAtributo = traductorAtributos(type, atributos[i]);
 
-                li.innerHTML = '<b>' + nombreAtributo + ': </b>' + datoActual[atributos[i]].value;
+                if (nombreAtributo == "Enlace"){
+                    li.innerHTML = '<b>' + nombreAtributo + ': </b><a href=' + datoActual.enlace.value + '>Desglose de información</a>';
+                } else {
+                    li.innerHTML = '<b>' + nombreAtributo + ': </b>' + datoActual[atributos[i]].value;
+                }
+
                 text_Info.appendChild(li);
             } else if (atributos[i].localeCompare("URLImagen") == 0) {
                 foto_Info.innerHTML = "<a><img src=" + datoActual.URLImagen.value + " alt=" + id + " style= height:100%;width:100%;image-orientation:from-image; onclick=ampliar(this.src)" + " /></a>";
@@ -156,19 +168,13 @@ function styleSelectObject(feature, resolution) {
             }
         }
     }
+    info.style.display = "flex";
     overlay.setPosition(coordenadas);
     estilo = buscadorEstilosIconSelected(type, feature);
     return estilo;
 }
 
 //============= Modal-box para ampliar imagenes =====================================
-// Get the modal
-//var modal = document.getElementById("myModal"); Se define la parte del codigo en javascript del html, para que lo vea este script
-
-// Get the image and insert it inside the modal - use its "alt" text as a caption
-//var img = document.getElementById("myImg");
-//var modalImg = document.getElementById("img01");
-//var captionText = document.getElementById("caption");
 function ampliar(ruta){
   modal.style.display = "block";
   modalImg.src = ruta;
@@ -184,6 +190,8 @@ function buscadorEstilosIconSelected(type, feature) {
         enlace = 'http://osm.uma.es/Iconos/Carga/carga2.png';
     } else if (type.localeCompare(tipos[4]) == 0) {
         enlace = 'http://osm.uma.es/Iconos/Parking/PB_2.png';
+    } else if (type.localeCompare(tipos[5]) == 0) {
+        enlace = 'http://osm.uma.es/Iconos/Climatizacion/clima2.png';
     } else {
         enlace = 'http://osm.uma.es/Iconos/Default/interrogacionSelect.png';
     }

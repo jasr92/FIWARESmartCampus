@@ -24,7 +24,7 @@ path_token = '/v3/auth/tokens'
 puerto_entidades = ':2026'
 path_entidades = ['/v2/entities?type=Arbol', '/v2/entities?type=Biodiversidad',
                   '/v2/entities?type=Cargadores', '/v2/entities?type=Zonas',
-                  '/v2/entities?type=Parkings']
+                  '/v2/entities?type=Parkings', '/v2/entities?type=EquiposClimatizacion']
 opciones_entidades = '&limit=1000&options=count'
 
 # Pasar por el proxy de la uma
