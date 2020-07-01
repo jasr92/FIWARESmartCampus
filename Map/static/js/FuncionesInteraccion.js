@@ -1,6 +1,16 @@
 atributos_propiedades = ["id", "type", "location", "URLImagen"];
 tipos = ["Arbol", "Biodiversidad", "Cargadores", "Zonas", "Parkings", "EquiposClimatizacion"];
 
+function menuInformacion(){
+    g_ent = ["Árboles", "Biodiversidad", "Cargadores eléctricos", "Zonas", "Parkings de Bicis", "Equipos de Climatización"];
+    inf_ent = ["Muestra de la arboleda exsistente en el Boulevar Louis Pasteur del Campus de Teatinos.",
+               "Muestra de la biodiversidad de la zona. Fotografías obtenidas en la campaña Rétame impulsada por el Vicerrectorado de Smart-Campus en el curso 2018/2019.",
+               "Situación de las tomas con cargadores para vehículos eléctricos en los distintos campus de la Universidad de Málaga.",
+               "Localización y representación geométrica de la planta de todas y cada una de los distintos edificios y zonas pertenecientes a la Universidad de Málaga. Indica además su estado actual, incluyendo los futuros proyectos de remodelación, expansión y/o reforma.",
+               "Localización de los parkings para bicicletas/patinetes eléctricos en los distintos campus de la Universidad.",
+               "Muestra de los equipos de climatización inventariados en los distintos edificios de la Universidad."];
+}
+
 function traductorAtributos(type, atributoBuscado) {
 
     var atributos;

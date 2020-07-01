@@ -3,7 +3,7 @@
 {% block content %}
     {% csrf_token %}
 
-    <html lang="es" dir="ltr">
+<html lang="es" dir="ltr" xmlns="http://www.w3.org/1999/html">
     <head>
         <meta charset="utf-8">
         <title>Mapa - Universidad de M&aacutelaga</title>
@@ -45,6 +45,9 @@
 	<li><div id="tc"><h1>Mapa UMA</h1></div></li>
 	<li><div id="ic2"><a href="https://www.uma.es/smart-campus" title="Vicerrectorado de Smart-Campus"><img src="{% static 'images/ic2.png' %}" alt="ic2"></a></div></li>
     </ul>
+
+
+
     <div class="cabecerachica">
         <div class="lcc">
             <div class="lcc1"><a href="https://www.uma.es" title="Universidad de Malaga"><img src="{% static 'images/ic1.png' %}" alt="ic1"></a></div>
@@ -52,6 +55,11 @@
         </div>
         <h1>Mapa UMA</h1></div>
     </div>
+
+    <nav id="menu">
+        <ul id="lista-1">
+        </ul>
+    </nav>
 
     <div class="MAPA">
         <div id="map" class="map" style="width: 100%; height: 74vh;"></div>
@@ -113,6 +121,22 @@
 
     <!-- <p id="demo"></p> -->
     <script>
+
+        menuInformacion()
+        var li1 = new Array();
+        var ul_li = new Array();
+        var li_ul_li = new Array();
+        for(var i=0; i<g_ent.length; i++){
+            li1[i] = document.createElement("li");
+            ul_li[i] = document.createElement("ul");
+            li_ul_li[i] = document.createElement("li");
+            li1[i].innerHTML = "<a href=" + "#" + ">" + g_ent[i] + "</a>";
+            li_ul_li[i].innerHTML = "<p href=" + "#" + ">" + inf_ent[i] + "</p>";
+            ul_li[i].appendChild(li_ul_li[i]);
+            li1[i].appendChild(ul_li[i]);
+            document.getElementById("lista-1").appendChild(li1[i]);
+        }
+
         var coordenadasIniciales = ol.proj.fromLonLat([-4.472176, 36.716432]);
         //ESTILOS==============================================
 
