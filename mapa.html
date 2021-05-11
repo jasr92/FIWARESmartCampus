@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+{% load static %}
+{% block content %}
+    {% csrf_token %}
+
+<html lang="es" dir="ltr" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="utf-8">
+        <title>Mapa - Universidad de M&aacutelaga</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                crossorigin="anonymous"></script>
+        <script src="{% static 'js/ol3-layerswitcher.js' %}"></script>
+        <script src="{% static 'js/FuncionesCluster.js' %}"></script>
+        <script src="{% static 'js/FuncionesInteraccion.js' %}"></script>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous">
+        <link rel="stylesheet"
+              href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css">
+        <link rel="stylesheet" href="{% static 'css/ol3-layerswitcher.css' %}">
+        <link rel="stylesheet" href="{% static 'css/popup.css' %}">
+        <link rel="stylesheet" href="{% static 'css/estilo_Mapa.css' %}">
+        <link rel="stylesheet" href="{% static 'css/estilos_pagina.css' %}">
+	    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.ico' %}">
+
+
+    </head>
+    <body>
+    <ul id="cabecera">
+	<li><div id="ic1"><a href="https://www.uma.es" title="Universidad de Malaga"><img src="{% static 'images/ic1.png' %}" alt="ic1"></a></div></li>
+	<li><div id="tc"><h1>Mapa UMA</h1></div></li>
+	<li><div id="ic2"><a href="https://www.uma.es/smart-campus" title="Vicerrectorado de Smart-Campus"><img src="{% static 'images/ic2.png' %}" alt="ic2"></a></div></li>
+    </ul>
+
+
+
+    <div class="cabecerachica">
+        <div class="lcc">
+            <div class="lcc1"><a href="https://www.uma.es" title="Universidad de Malaga"><img src="{% static 'images/ic1.png' %}" alt="ic1"></a></div>
+            <div class="lcc2"><a href="https://www.uma.es/smart-campus" title="Vicerrectorado de Smart-Campus"><img src="{% static 'images/ic2.png' %}" alt="ic2"></a></div>
+        </div>
+        <h1>Mapa UMA</h1></div>
+    </div>
+
+    <nav id="menu">
+        <ul id="lista-1">
+        </ul>
+    </nav>
+
+    <div class="MAPA">
+        <div id="map" class="map" style="width: 100%; height: 74vh;"></div>
+        <div id="popup" class="ol-popup">
+            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+            <div id="popup-content"></div>
+        </div>
+        <div class="sobre1000px" id="CreatedByFrancisco">
+            <div id="photo-info" class="container">
+                <div id="cerrar">&times;</div>
+                <div id="fotoInfo" class="foto-Info"><p style="text-align:center; font-weight:bold">¡Selecciona alguno de los iconos!</p></div>
+                <ul id="textInfo" class="text-Info"><img src="{% static 'images/iconito.png' %}" height="50px" width="50px"></ul>
+            </div>
+        </div>
+        <br>
+    </div>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <span class="close">&times;</span>
+      <img class="modal-content" id="img01">
+      <div id="caption"></div>
+    </div>
+
+
+    <div class="box">
+        <p class="boxita">En este mapa se muestra información relevante a los distintos campus de la Universidad de M&aacutelaga</p>
+    </div>
+
+    <!--
+    <div class="bajo1000px">
+        <div id="photo-info" class="container">
+            <div id="fotoInfo" class="foto-Info"></div>
+            <ul id="textInfo" class="text-Info"></ul>
+        </div>
+    </div>
+    -->
+    <!-- Comprobaciones por pantalla -->
+    <!-- <div class="ooo"><p>Comprobaciones</p><p id="prueba"></p></div> -->
+
+    <!-- marco para alojar el visor de imagenes de Smart-Campus -->
+    <!-- <div id="marco"> -->
+	<!-- <iframe width="560" height="440" src="http://osm.uma.es/Pruebas_Alojamiento/Album/p5.html" allowfullscreen></iframe> -->
+    <!-- </div> -->
+    <br>
+    <footer style="width: 100%;">
+        <div class="row">
+            <div class="col-sm-12" style="height: 3px;"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12" style="background-color: #FFF; height: 2px;"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12" style="text-align: center; padding-top: 10px;"><img src="{% static 'images/footer_2.png' %}" height="62px"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12" id="textfooter" style="text-align: center; color: white; height: 40px; font-weight: bold; padding-top: 10px;">Universidad de Malaga · Vicerrectorado de Smart-Campus · smart@uma.es</div>
+        </div>
+    </footer>
+
+    <!-- <p id="demo"></p> -->
+    <script>
+
+        menuInformacion()
+        var li1 = new Array();
+        var ul_li = new Array();
+        var li_ul_li = new Array();
+        for(var i=0; i<g_ent.length; i++){
+            li1[i] = document.createElement("li");
+            ul_li[i] = document.createElement("ul");
+            li_ul_li[i] = document.createElement("li");
+            li1[i].innerHTML = "<a href=" + "#" + ">" + g_ent[i] + "</a>";
+            li_ul_li[i].innerHTML = "<p href=" + "#" + ">" + inf_ent[i] + "</p>";
+            ul_li[i].appendChild(li_ul_li[i]);
+            li1[i].appendChild(ul_li[i]);
+            document.getElementById("lista-1").appendChild(li1[i]);
+        }
+
+        var coordenadasIniciales = ol.proj.fromLonLat([-4.472176, 36.716432]);
+        //ESTILOS==============================================
+
+        /*var styles = {
+            'Point': new ol.style.Style({
+            image: image
+        })}
+        var styleFunction = function(feature) {
+            return styles[feature.getGeometry().getType()];
+          };*/
+        //=====================================================
+
+        //Función para buscar en un json ========================================
+
+        function buscar_x_ID_JSON(data_json, id_buscada) {
+            nMax = data_json.length;
+            for (var i = 0; i < nMax; i++) {
+                /* Segundo bucle para buscar dentro del array que contiene los distintos grupos de entidades */
+                mMax = data_json[i].length;
+                for (var j = 0; j < mMax; j++) {
+                    if (data_json[i][j].id == id_buscada) {
+                        return data_json[i][j];
+                    }
+                }
+            }
+            return false;
+        }
+        //=======================================================================
+
+        var entidad_Source_0 = new ol.source.Vector();
+        var entidad_Source_1 = new ol.source.Vector();
+        var entidad_Source_2 = new ol.source.Vector();
+        var entidad_Source_3 = new ol.source.Vector();
+        var entidad_Source_4 = new ol.source.Vector();
+        var entidad_Source_5 = new ol.source.Vector();
+        var entidad_Source_6 = new ol.source.Vector();//=================================== AQUI
+        var obj = {{ entidades|safe }};
+
+        var n_ent_diferentes = obj.length;
+        for (var i = 0; i < n_ent_diferentes; i++) {
+            var n_entidades = obj[i].length;
+            for (var j = 0; j < n_entidades; j++) {
+                if ( obj[i][j].location.value.type == 'Point' ) {
+                    var coordenadas = ol.proj.fromLonLat(obj[i][j].location.value.coordinates);
+                    var geometry = new ol.geom.Point(coordenadas);
+                } else {
+                    var n_vertices = obj[i][j].location.value.coordinates[0].length;
+                    var coordenadasP = new Array();
+                    for ( k = 0; k < n_vertices; k++) {
+                        coordenadasP[k] = obj[i][j].location.value.coordinates[0][k];
+                    }
+                    var geometry = new ol.geom.Polygon([coordenadasP]).transform('EPSG:4326', 'EPSG:3857');
+                }
+                        if (obj[i][j].type != 'Zonas'){
+                            var feature = new ol.Feature({
+                                geometry: geometry,
+                                name: obj[i][j].type
+                            });
+                        }
+                        else {
+                            var feature = new ol.Feature({
+                                geometry: geometry,
+                                name: obj[i][j].type,
+                                Atributo: obj[i][j].Estado.value
+                            });
+                         }
+
+                feature.setId(obj[i][j].id)
+                /* Comprobaciones del codigo mostrada directamente en la página */
+                //document.getElementById('prueba').innerHTML = obj[1][1].id;    /* -------------- Comprobaciones ----- */
+
+                switch(i) {
+                  case 0: entidad_Source_0.addFeature(feature); break;
+                  case 1: entidad_Source_1.addFeature(feature); break;
+                  case 2: entidad_Source_2.addFeature(feature); break;
+                  case 3: entidad_Source_3.addFeature(feature); break;
+                  case 4: entidad_Source_4.addFeature(feature); break;
+                  case 5: entidad_Source_5.addFeature(feature); break;
+                  case 6: entidad_Source_6.addFeature(feature); break;//=================================== AQUI
+                }
+            }
+        }
+
+        // a cluster source can group photos that are too close
+        var clusterSource_1 = new ol.source.Cluster({
+            source: entidad_Source_0,
+            distance: 10
+        });
+        var clusterSource_2 = new ol.source.Cluster({
+            source: entidad_Source_1,
+            distance: 10
+        });
+        var clusterSource_3 = new ol.source.Cluster({
+            source: entidad_Source_2,
+            distance: 25
+        });
+        var clusterSource_4 = new ol.source.Cluster({
+            source: entidad_Source_4,
+            distance: 15
+        });
+        var clusterSource_5 = new ol.source.Cluster({
+            source: entidad_Source_5,
+            distance: 15
+        });
+        var clusterSource_6 = new ol.source.Cluster({//=================================== AQUI
+            source: entidad_Source_6,
+            distance: 15
+        });
+	/*
+        var vectorLayer = new ol.layer.Vector({
+            source: clusterSource_1,
+            style: clusterStyle_1
+        });
+	*/
+        var cache = {};
+
+
+        //document.getElementById('demo').innerHTML = ["Coordenadas Brutas: " + coordenadas];
+        //var tipo = obj[0].location.value.type;
+
+        //****POP-UP*************************************************************************************************
+        /**
+         * Elements that make up the popup.
+         */
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var closer = document.getElementById('popup-closer');
+        var info = document.getElementById('photo-info');
+        var text_Info = document.getElementById('textInfo');
+        var foto_Info = document.getElementById('fotoInfo');
+        var modal = document.getElementById("myModal");
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        var span = document.getElementsByClassName("close")[0];
+        var cierre = document.getElementById("cerrar");
+
+        var hide = document.getElementById("map");
+        //hide.onclick = function() {info.style.display = "flex";}
+        cierre.onclick = function(){info.style.display = "none";}
+
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+
+        /**
+         * Create an overlay to anchor the popup to the map.
+         */
+        var overlay = new ol.Overlay({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+        });
+
+        /**
+         * Add a click handler to hide the popup.
+         * @return {boolean} Don't follow the href.
+         */
+        closer.onclick = function () {
+            overlay.setPosition(undefined);
+            closer.blur();
+            selectObject.getFeatures().clear(); //Deselecciono el objeto
+            return false;
+        };
+        //**************************************************************************************************************
+
+
+        //***** Constructor MAPA *****************
+
+        var view = new ol.View({
+            center: coordenadasIniciales,
+            zoom: 10
+        })
+
+        var planoOSM = new ol.layer.Tile({
+            title: 'Capa Plano',
+            source: new ol.source.OSM()
+        });
+
+        var capaContenedores = new ol.layer.Vector({//=================================== AQUI
+            title: 'Contenedores UMA',
+            source: clusterSource_6,
+            style: clusterStyle_6
+        });
+
+        var capaClima = new ol.layer.Vector({
+            title: 'Equipos Climatizacion',
+            source: clusterSource_5,
+            style: clusterStyle_5
+        });
+
+	    var capaParkings = new ol.layer.Vector({
+            title: 'Parkings Bicicletas',
+            source: clusterSource_4,
+            style: clusterStyle_4
+        });
+
+        var capaCargadores = new ol.layer.Vector({
+            title: 'Cargadores',
+            source: clusterSource_3,
+            style: clusterStyle_3
+            //style: styleFunction
+        });
+
+        var capaBiodiversidad = new ol.layer.Vector({
+            title: 'Biodiversidad',
+            source: clusterSource_2,
+            style: clusterStyle_2
+            //style: styleFunction
+        });
+
+        var capaArboles = new ol.layer.Vector({
+            title: 'Árboles',
+            source: clusterSource_1,
+            //visible: false, ¡¡¡¡¡FUNCIONA!!!!!
+            style: clusterStyle_1
+            //style: styleFunction
+        });
+
+        var capaZonas = new ol.layer.Vector({
+            title: 'Zonas',
+            source: entidad_Source_3,
+            style: Style_Z
+            //style: clusterStyle_4
+        });
+
+        var map = new ol.Map({
+            layers:[
+                new ol.layer.Group({
+                    //'title': 'Capas Base',
+                    layers: [
+                        planoOSM,]
+                }),
+                new ol.layer.Group({
+                    'title': 'Capas de Datos',
+                    layers: [
+                        capaZonas,
+                        capaArboles,
+                        capaBiodiversidad,
+                        capaCargadores,
+                        capaParkings,
+                        capaClima,
+                        capaContenedores]//=================================== AQUI
+                })
+                ],
+            overlays: [overlay],
+            target: 'map',
+            view: view,
+        })
+        map.addControl(new ol.control.ZoomSlider());
+
+        var selectObject = new ol.interaction.Select({
+                layers: [capaArboles, capaBiodiversidad, capaCargadores, capaParkings,
+                 capaZonas, capaClima, capaContenedores],//=================================== AQUI
+                style: styleSelectObject
+            })
+        ;
+        var layerSwitcher = new ol.control.LayerSwitcher({
+            tipLabel: 'Leyenda'
+        });
+        map.addControl(layerSwitcher);
+        layerSwitcher.showPanel();
+
+        map.addInteraction(selectObject);
+
+        //Cambios de estilo del cursor para que salga la mano señalando cuando haya un elemento ==============
+        map.on('pointermove', function (e) {
+            if (e.dragging) {
+                return
+            }
+            var pixel = map.getEventPixel(e.originalEvent);
+            var hit = map.hasFeatureAtPixel(pixel);
+            map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+        });
+        map.on('click', function (e) {
+            overlay.setPosition(undefined);
+            closer.blur();
+            selectObject.getFeatures().clear(); //Deselecciono el objeto
+        });
+        map.on('pointerdrag', function (e) {
+            overlay.setPosition(undefined);
+            closer.blur();
+            selectObject.getFeatures().clear(); //Deselecciono el objeto
+        });
+
+
+        //=====================================================================================================
+
+        /**
+         * Add a click handler to the map to render the popup.
+         */
+        /*map.on('singleclick', function (evt) {
+            var coordinate = evt.coordinate;
+            var hdms = ol.coordinate.toStringHDMS(ol.proj.toLonLat(coordinate));
+
+            content.innerHTML = '<p>You clicked here:</p><code>' + hdms +
+                '</code>';
+            overlay.setPosition(coordinate);
+        });
+        */
+
+
+        console.log("test")
+
+    </script>
+    </body>
+    </html>
+{% endblock %}
